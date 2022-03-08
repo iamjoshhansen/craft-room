@@ -1,1 +1,50 @@
-/* You can add global styles to this file, and also import other style files */
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body,
+.theme--light {
+  --font-headings: "Chakra Petch", sans-serif;
+  --font: "Open Sans", sans-serif;
+  --text-color: #333;
+  --bg-color: #eee;
+  --bg-hover: #ddd;
+  --link-color: #09f;
+  --text-invert: #eee;
+  --bg-invert: #333;
+}
+
+body {
+  display: grid;
+  min-height: 100vh;
+
+  font-family: var(--font);
+  color: var(--text-color);
+}
+
+.theme--dark {
+  --text-color: #eee;
+  --bg-color: #101010;
+  --link-color: #090;
+  --bg-hover: #333;
+  --text-invert: #333;
+  --bg-invert: #eee;
+}
+
+a {
+  color: var(--link-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-headings);
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+}

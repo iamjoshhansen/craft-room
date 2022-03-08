@@ -1,0 +1,12 @@
+<canvas #canvas class="canvas" [ngStyle]="canvasStyle"></canvas>
+<div class="controls">
+  <label>
+    X:
+    <input type="range" min="0" max="11" step="0.5" [(ngModel)]="offsetX" />
+  </label>
+
+  <label>
+    Y:
+    <input type="range" min="0" max="11" step="0.5" [(ngModel)]="offsetY" />
+  </label>
+</div>
