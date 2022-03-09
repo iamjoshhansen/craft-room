@@ -190,12 +190,26 @@ export class CraftRoomPageComponent implements AfterViewInit, OnDestroy {
     this.offsetYSubject.next(val);
   }
 
+  private weightSubject = new BehaviorSubject<number>(0.5);
+  readonly weight$ = this.weightSubject.pipe(distinctUntilChanged());
+  get weight() {
+    return this.weightSubject.value;
+  }
+  set weight(val: number) {
+    this.weightSubject.next(val);
+  }
+
   constructor(private windowService: WindowService) {}
 
   ngAfterViewInit(): void {
-    combineLatest([this.windowService.size$, this.offsetX$, this.offsetY$])
+    combineLatest([
+      this.windowService.size$,
+      this.offsetX$,
+      this.offsetY$,
+      this.weight$,
+    ])
       .pipe(takeUntil(this.destroyed), delay(10))
-      .subscribe(([size, offsetX, offsetY]) => {
+      .subscribe(([size, offsetX, offsetY, weight]) => {
         this.canvasStyle = {
           width: `${size.width}px`,
           height: `${size.height}px`,
@@ -208,10 +222,15 @@ export class CraftRoomPageComponent implements AfterViewInit, OnDestroy {
           canvas.width = size.width;
           canvas.height = size.height;
           const ctx: CanvasRenderingContext2D = canvas.getContext('2d')!;
-          this.draw(ctx, size, {
-            x: offsetX,
-            y: offsetY,
-          });
+          this.draw(
+            ctx,
+            size,
+            {
+              x: offsetX,
+              y: offsetY,
+            },
+            weight
+          );
         }
       });
   }
@@ -220,7 +239,15 @@ export class CraftRoomPageComponent implements AfterViewInit, OnDestroy {
     this.destroyed.next();
   }
 
-  private draw(ctx: CanvasRenderingContext2D, size: Size, offset: Point) {
+  private draw(
+    ctx: CanvasRenderingContext2D,
+    size: Size,
+    offset: Point,
+    weight: number
+  ) {
+    ctx.fillStyle = `#ffffffcc`;
+    ctx.fillRect(0, 0, size.width, size.height);
+
     ctx.save();
 
     const viewport = new Viewport([
@@ -266,6 +293,7 @@ export class CraftRoomPageComponent implements AfterViewInit, OnDestroy {
       bottomI += 12;
     }
 
+    ctx.strokeStyle = `rgba(0,0,0,${weight})`;
     ctx.stroke();
     ctx.closePath();
 
@@ -275,6 +303,7 @@ export class CraftRoomPageComponent implements AfterViewInit, OnDestroy {
 
     ctx.lineWidth = 3 / scale;
     ctx.lineCap = 'square';
+    ctx.strokeStyle = `#000`;
 
     walls.forEach((wall) => {
       ctx.beginPath();

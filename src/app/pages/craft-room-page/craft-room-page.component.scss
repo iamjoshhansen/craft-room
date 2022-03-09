@@ -1,6 +1,6 @@
 .canvas {
   background: #fff;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  // box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
   margin: 0 auto;
   display: block;
 }
@@ -13,5 +13,12 @@
 
   label {
     display: block;
+    text-align: right;
+  }
+}
+
+@media print {
+  .controls {
+    display: none;
   }
 }
